@@ -6,7 +6,6 @@ var isiPhone = !!navigator.userAgent.match(/[iPhone|iPad|iPod].*Mobile/);
 * Const
 * --------------------------------------------------
 */
-var MESSAGE = "<div id='message'>無限もりよし</div><br><div id='namekoNum'>0本</div>";
 
 var ROW = 30;
 var COL = 30;
@@ -75,8 +74,6 @@ function onLoad() {
 		attr("id", "txt").
 		css({"fontSize":10, "textAlign":"center"}).
     	appendTo("#main");
-    $("#txt").html(MESSAGE);
-    $("#namekoNum").html(namekoNum + "本");
 	createObj();
 
 }
@@ -131,7 +128,7 @@ function onResize() {
 */
 function createObj() {
 	shiftX = Math.round((document.body.clientWidth - COL*OBJ_DISTANCE)/2);
-	shiftY = SIZE_Y*1.2;
+	shiftY = 0;
 	arObj = new Array();
 	for (var i=0; i<COL; i++) {
 		arObj[i] = new Array();

@@ -18,7 +18,6 @@ public class MoriyoshiActivity extends Activity {
 	SoundPool spHow = null;
 	private int spHowId = 0;
 	
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

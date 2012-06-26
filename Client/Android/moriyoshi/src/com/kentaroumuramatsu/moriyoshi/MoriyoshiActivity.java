@@ -27,15 +27,29 @@ public class MoriyoshiActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
+		
+		// WebViewインスタンスの作成
 		WebView webview = new WebView(this);
-		setContentView(webview);
+		
+		// 使用するXMLを設定する
 		setContentView(R.layout.main);
+		
+		// 指定されたIDにWebViewをセットする
 		webview = (WebView) findViewById(R.id.webview);
+		
+		// WebViewClientをオーバーライドしたWebViewClientをセットする
 		webview.setWebViewClient(new CustomWebViewClient());
 		
+		// URLを読み込む
 		webview.loadUrl("http://blog.kentaroumuramatsu.com/files/moriyoshi/index.html");
+		
+		// javascriptを有効にする
 		webview.getSettings().setJavaScriptEnabled(true);
+		
+		// javascriptから呼ばれるファンクションをセット
 		webview.addJavascriptInterface(new JSSoundInterface(), "android_sound");
+		
+		// 効果音の初期化
 		mpPanchi1 = MediaPlayer.create(this, R.raw.panchi);
 		mpPanchi2 = MediaPlayer.create(this, R.raw.panchi);
 		mpPanchi3 = MediaPlayer.create(this, R.raw.panchi);
@@ -48,7 +62,10 @@ public class MoriyoshiActivity extends Activity {
 		mpHow5 = MediaPlayer.create(this, R.raw.how);
 	}
 	
+	// Javascriptから呼び出すファンクション
 	class JSSoundInterface {
+		
+		// パンチ音再生
 		public void playPanchi() {
 			if(mpPanchi1.isPlaying() == true) {
 				mpPanchi2.start();
@@ -63,6 +80,7 @@ public class MoriyoshiActivity extends Activity {
 			}
 		}
 		
+		// はう再生
 		public void playHow() {
 			if(mpHow1.isPlaying() == true) {
 				mpHow2.start();
@@ -78,10 +96,11 @@ public class MoriyoshiActivity extends Activity {
 		}
 	}
 	
-	
+	// ページ読込中のダイヤログ表示など
 	class CustomWebViewClient extends WebViewClient {
 		ProgressDialog waitDialog = null;
 		@Override
+		//読み込み開始
 		public void onPageStarted(WebView view, String url, Bitmap favicon) {
 			super.onPageStarted(view, url, favicon);
 			waitDialog = new ProgressDialog(view.getContext());
@@ -90,6 +109,7 @@ public class MoriyoshiActivity extends Activity {
 			waitDialog.show();
 		}
 		@Override
+		// 読み込み完了
 		public void onPageFinished(WebView view, String url) {
 			super.onPageFinished(view, url);
 			if(waitDialog != null){
@@ -98,6 +118,7 @@ public class MoriyoshiActivity extends Activity {
 			}
 		}
 		@Override
+		// 読み込み時にエラー
 		public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 			AlertDialog.Builder dialog = new AlertDialog.Builder(view.getContext());
 			dialog.setTitle("エラー");

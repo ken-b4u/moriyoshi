@@ -5,27 +5,22 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.media.MediaPlayer;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public class MoriyoshiActivity extends Activity {
 	
-	private MediaPlayer mpPanchi1 = null;
-	private MediaPlayer mpPanchi2 = null;
-	private MediaPlayer mpPanchi3 = null;
-	private MediaPlayer mpPanchi4 = null;
-	private MediaPlayer mpPanchi5 = null;
-	private MediaPlayer mpHow1 = null;
-	private MediaPlayer mpHow2 = null;
-	private MediaPlayer mpHow3 = null;
-	private MediaPlayer mpHow4 = null;
-	private MediaPlayer mpHow5 = null;
+	SoundPool spPanchi = null;
+	private int spPanchiId = 0;
+	SoundPool spHow = null;
+	private int spHowId = 0;
+	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		
 		super.onCreate(savedInstanceState);
 		
 		// WebViewインスタンスの作成
@@ -50,16 +45,10 @@ public class MoriyoshiActivity extends Activity {
 		webview.addJavascriptInterface(new JSSoundInterface(), "android_sound");
 		
 		// 効果音の初期化
-		mpPanchi1 = MediaPlayer.create(this, R.raw.panchi);
-		mpPanchi2 = MediaPlayer.create(this, R.raw.panchi);
-		mpPanchi3 = MediaPlayer.create(this, R.raw.panchi);
-		mpPanchi4 = MediaPlayer.create(this, R.raw.panchi);
-		mpPanchi5 = MediaPlayer.create(this, R.raw.panchi);
-		mpHow1 = MediaPlayer.create(this, R.raw.how);
-		mpHow2 = MediaPlayer.create(this, R.raw.how);
-		mpHow3 = MediaPlayer.create(this, R.raw.how);
-		mpHow4 = MediaPlayer.create(this, R.raw.how);
-		mpHow5 = MediaPlayer.create(this, R.raw.how);
+		spPanchi = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+		spPanchiId = spPanchi.load(this, R.raw.panchi, 1);
+		spHow = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+		spHowId = spHow.load(this, R.raw.how, 1);
 	}
 	
 	// Javascriptから呼び出すファンクション
@@ -67,32 +56,12 @@ public class MoriyoshiActivity extends Activity {
 		
 		// パンチ音再生
 		public void playPanchi() {
-			if(mpPanchi1.isPlaying() == true) {
-				mpPanchi2.start();
-			} else if(mpPanchi2.isPlaying() == true) {
-				mpPanchi3.start();
-			} else if(mpPanchi3.isPlaying() == true) {
-				mpPanchi4.start();
-			} else if(mpPanchi4.isPlaying() == true) {
-				mpPanchi5.start();
-			} else {
-				mpPanchi1.start();
-			}
+			spPanchi.play(spPanchiId, 100, 100, 1, 0, 1);
 		}
 		
 		// はう再生
 		public void playHow() {
-			if(mpHow1.isPlaying() == true) {
-				mpHow2.start();
-			} else if(mpHow2.isPlaying() == true) {
-				mpHow3.start();
-			} else if(mpHow3.isPlaying() == true) {
-				mpHow4.start();
-			} else if(mpHow4.isPlaying() == true) {
-				mpHow5.start();
-			} else {
-				mpHow1.start();
-			}
+			spHow.play(spHowId, 100, 100, 1, 0, 1);
 		}
 	}
 	

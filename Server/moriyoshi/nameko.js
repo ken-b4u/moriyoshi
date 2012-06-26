@@ -1,4 +1,5 @@
 var isiPhone = !!navigator.userAgent.match(/[iPhone|iPad|iPod].*Mobile/);
+var isAndroid = !!navigator.userAgent.match(/[Android].*Mobile/);
 
 
 /*
@@ -83,6 +84,7 @@ function onMouseMove(e) {
 }
 
 function onMouseDown(e) {
+	// サウンド再生
 	var mouseX = getMouseX(e);
 	var mouseY = getMouseY(e);
 	var objWidth = shiftX + COL*OBJ_DISTANCE;
@@ -92,13 +94,16 @@ function onMouseDown(e) {
 		var y = Math.floor((mouseY - shiftY) / OBJ_DISTANCE);
 		var obj = arObj[x][y];
 		if (!obj.isAnimation) {
+			if(isAndroid) {
+				android_sound.playPanchi();
+			}
 			obj.isAnimation = true;
 			var id = "#" + obj.id;
 			$(id).animate({height:"+=20", top:"-=20"}, "fast");
 			$(id).animate({height:"-=25", top:"+=5"}, "fast");
 			$(id).animate({height:"+=5"}, "fast");
-			$(id).animate({ width:"hide", height:"hide", top:0, left:0 }, "normal"); 
-			$(id).animate({top:obj.y+SIZE_Y/2, left:obj.x+SIZE_X/2}, "fast",
+			$(id).animate({ width:"hide", height:"hide", top:0, left:0 }, "normal");
+			$(id).animate({top:obj.y+SIZE_Y/2, left:obj.x+SIZE_X/2}, "fast", 
 				function(){
 					var n = Math.floor( Math.random() * GOLDEN_PROBABILITY );
 					$(id).attr("src", n == 1 ? goldenSrc : namekoSrc);
@@ -107,11 +112,11 @@ function onMouseDown(e) {
 			$(id).animate({ width:"show", height:"show",top:obj.y, left:obj.x}, "normal",
 				function(){
 					obj.isAnimation = false;
-					$("#namekoNum").html(++namekoNum + "本");
+					if(isAndroid) {
+						android_sound.playHow();
+					}
 				}
 			);
-			// サウンド再生
-			
 		}
 	}
 }
